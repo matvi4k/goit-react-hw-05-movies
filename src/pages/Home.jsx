@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const API_KEY = 'd7c241f33e39c9fb38b36ca12385aca4';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 const Home = () => {
+    const navigate = useNavigate();
     const [movies, setMovies] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState (null)
@@ -41,9 +42,21 @@ const Home = () => {
           <ul style={{ fontSize: 24, listStyle: 'none', padding: 0 }}>
         {movies.map((movie) => (
           <li key={movie.id} style={{ marginBottom: "12px" }}>
-            <Link to={`/movies/${movie.id}`} style={{ color: '#007BFF', textDecoration: 'none' }}>
+            <button
+              type="button"
+              onClick={() => navigate(`/movies/${movie.id}`)}
+              style={{
+                color: '#007BFF',
+                textDecoration: 'none',
+                font: 'inherit',
+                padding: 0,
+                border: 0,
+                background: 'none',
+                cursor: 'pointer',
+              }}
+            >
               {movie.title || movie.name}
-            </Link>
+            </button>
           </li>
         ))}
       </ul>

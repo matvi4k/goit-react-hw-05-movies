@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const API_KEY = 'd7c241f33e39c9fb38b36ca12385aca4';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w200';
 
 export const Movies = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query')?.trim() ?? '';
   const [inputValue, setInputValue] = useState(query);
@@ -96,7 +97,19 @@ export const Movies = () => {
       <ul>
         {movies.map(movie => (
           <li key={movie.id}>
-            <Link to={`/movies/${movie.id}`}>
+            <button
+              type="button"
+              onClick={() => navigate(`/movies/${movie.id}`)}
+              style={{
+                padding: 0,
+                border: 0,
+                background: 'none',
+                color: 'inherit',
+                font: 'inherit',
+                textAlign: 'left',
+                cursor: 'pointer',
+              }}
+            >
               {movie.poster_path && (
                 <img
                   src={`${IMAGE_BASE_URL}${movie.poster_path}`}
@@ -106,7 +119,7 @@ export const Movies = () => {
               )}{' '}
               {movie.title}
               {movie.release_date && ` (${movie.release_date.slice(0, 4)})`}
-            </Link>
+            </button>
           </li>
         ))}
       </ul>

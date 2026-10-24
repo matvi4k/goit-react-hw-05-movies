@@ -1,7 +1,7 @@
 import { NotFound } from 'pages/NotFound';
 // import { Home } from "pages/Home";
 import { Movies } from 'pages/Movies';
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { lazy, Suspense } from 'react';
 import { MovieDetails } from 'pages/MovieDetails';
@@ -10,15 +10,23 @@ import { Reviews } from 'components/Reviews';
 
 const Home = lazy(() => import('pages/Home'));
 
-const StyledLink = styled(NavLink)`
+const StyledButton = styled.button`
   color: black;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
 
-  &.active {
+  &[aria-current='page'] {
     color: pink;
   }
 `;
 
 export const App = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   return (
     <div
       style={{
@@ -31,10 +39,20 @@ export const App = () => {
       }}
     >
       <nav>
-        <StyledLink to="/" end>
+        <StyledButton
+          type="button"
+          aria-current={pathname === '/' ? 'page' : undefined}
+          onClick={() => navigate('/')}
+        >
           Home
-        </StyledLink>
-        <StyledLink to="/movies">Movies</StyledLink>
+        </StyledButton>
+        <StyledButton
+          type="button"
+          aria-current={pathname.startsWith('/movies') ? 'page' : undefined}
+          onClick={() => navigate('/movies')}
+        >
+          Movies
+        </StyledButton>
       </nav>
       <Suspense fallback={<div>Loading page...</div>}>
         <Routes>

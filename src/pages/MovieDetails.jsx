@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 const API_KEY = 'd7c241f33e39c9fb38b36ca12385aca4';
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -7,6 +7,7 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 export const MovieDetails = () => {
   const { movieId } = useParams();
+  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,7 +44,9 @@ export const MovieDetails = () => {
 
   return (
     <main>
-      <Link to="/">Go back</Link>
+      <button type="button" onClick={() => navigate('/')}>
+        Go back
+      </button>
       <h1>{movie.title}</h1>
       {movie.poster_path && (
         <img
@@ -60,10 +63,14 @@ export const MovieDetails = () => {
         <h2>Additional information</h2>
         <ul>
           <li>
-            <Link to="cast">Cast</Link>
+            <button type="button" onClick={() => navigate('cast')}>
+              Cast
+            </button>
           </li>
           <li>
-            <Link to="reviews">Reviews</Link>
+            <button type="button" onClick={() => navigate('reviews')}>
+              Reviews
+            </button>
           </li>
         </ul>
       </section>
